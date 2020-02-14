@@ -1,16 +1,38 @@
-## Test modification
-## Put comments here that give an overall description of what your
-## functions do
+## This R file contains code for the Programming Assignment 2. 
+## The following two functions (1) creates a special "matrix" object that 
+## can cache its inverse and (2) returns the inverse of this special "matrix
 
-## Write a short comment describing this function
+## First, the makeCacheMatrix function creates a special "matrix" that can 
+## cache its inverse (the argument x must be a matrix for the function to work).
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        i = NULL
+        setMatrix <- function(y) {
+                x <<- y
+                i <<- NULL
+        }
+        getMatrix <- function() x
+        setInverseMatrix <- function(InverseMatrix) 
+                i <<- InverseMatrix
+        getInverseMatrix <- function() i
+        list(setMatrix = setMatrix, getMatrix = getMatrix, 
+             setInverseMatrix = setInverseMatrix, 
+             getInverseMatrix = getInverseMatrix)
 }
 
 
-## Write a short comment describing this function
+## Second, the cacheSolve function returns the inverse of the special "matrix'
+## object returned by the makeCacheMatrix function, either by retrieving the
+## inverse from the cache or by calculating the inverse on the spot.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        i <- x$getInverseMatrix()
+        if(!is.null(i)) {
+                message("getting cached data")
+                return(i)
+        }
+        data <- x$getMatrix()
+        i <- solve(data, ...)
+        x$setInverseMatrix(i)
+        i
 }
